@@ -24,7 +24,7 @@ public class SpringBootConsoleApplication implements CommandLineRunner {
  
     @Override
     public void run(String... args) throws Exception {
-        logger.info("System Started");
+        logger.info("System Starting");
        String ret= helloService.hello("Boot");
         logger.info("Boot Service Result: "+ret);
         while(true){
@@ -36,7 +36,6 @@ public class SpringBootConsoleApplication implements CommandLineRunner {
             }
             logger.info("接收到未识别命令:"+command);
         }
-        //System.out.println("系统启动完成");
-        //do something
+        logger.info("System Started");
     }
 }
