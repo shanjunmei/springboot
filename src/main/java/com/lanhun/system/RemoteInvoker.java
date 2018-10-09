@@ -28,7 +28,7 @@ public class RemoteInvoker {
     public static Object invoke(Method method,Object[] params){
         RemoteMethod remoteMethod = buildRemoteMethod(method);
         logger.info("invoke method :"+ Arrays.toString(params));
-        return  HttpInvoker.post(remoteMethod.getCommond(),remoteMethod.getReturnType(),params);
+        return  HttpInvoker.invoke(remoteMethod,params);
     }
 
     private static String[] getParameterNames(Parameter[] parameters ){

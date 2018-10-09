@@ -13,14 +13,34 @@ import java.net.URL;
 public class HttpInvoker {
 
     /**
-     * http post 请求，带返回值类型
-     * @param url
-     * @param returnType
-     * @param params
+     * 请求参数转换
+     * @param paramNames
+     * @param args
+     * @return
+     */
+    public static byte[] convertParamter(String[]  paramNames,Object[] args){
+        return null;
+    }
+
+    /**
+     * 远程方法调用
+     * @param method
+     * @param args
      * @param <T>
      * @return
      */
-    public static <T> T post(String url, Type returnType, Object params) {
+    public static <T> T invoke(RemoteMethod method,Object[] args){
+        String response= post(method.getCommond(),convertParamter(method.getParamNames(),args));
+        return buildResponse(method.getReturnType(), response);
+    }
+
+    /**
+     * http post 请求，返回String
+     * @param url
+     * @param params
+     * @return
+     */
+    public static String  post(String url, byte[] params) {
         //request
         try {
            URL _url = new URL(url);
@@ -32,7 +52,7 @@ public class HttpInvoker {
            connection.setDoInput(true);
            connection.setDoOutput(true);
 
-           connection.getOutputStream().write(null);
+           connection.getOutputStream().write(params);
            StringBuilder body=null;
            BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
 
@@ -47,10 +67,11 @@ public class HttpInvoker {
             if(body==null){
                body=new StringBuilder();
             }
-            return buildResponse(returnType, body.toString());
+            return body.toString();
         }catch (Exception e){
             throw new RuntimeException(e);
         }
+
     }
 
     /**
