@@ -1,4 +1,4 @@
-package com.lanhun.controller;
+package com.lanhun.example.service;
 
 public interface HelloService {
 

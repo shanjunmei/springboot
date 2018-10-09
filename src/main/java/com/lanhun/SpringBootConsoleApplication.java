@@ -1,6 +1,6 @@
 package com.lanhun;
 
-import com.lanhun.controller.HelloService;
+import com.lanhun.example.controller.service.HelloService;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import org.slf4j.Logger;
@@ -22,7 +22,6 @@ public class SpringBootConsoleApplication implements CommandLineRunner {
         SpringApplication.run(SpringBootConsoleApplication.class, args);
     }
  
-    //access command line arguments
     @Override
     public void run(String... args) throws Exception {
         logger.info("System Started");

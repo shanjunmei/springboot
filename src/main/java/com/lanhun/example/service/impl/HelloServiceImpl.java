@@ -1,5 +1,7 @@
-package com.lanhun.controller;
+package com.lanhun.example.service.impl;
 
+
+import com.lanhun.example.service.HelloService;
 import org.springframework.stereotype.Component;
 
 @Component
