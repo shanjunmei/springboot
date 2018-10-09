@@ -1,6 +1,6 @@
 package com.lanhun;
 
-import com.lanhun.example.controller.service.HelloService;
+import com.lanhun.example.service.HelloService;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import org.slf4j.Logger;

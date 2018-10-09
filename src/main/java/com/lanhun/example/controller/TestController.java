@@ -1,3 +1,4 @@
+/*
 package com.lanhun.example.controller;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,3 +25,4 @@ public class TestController {
     }
 
 }
+*/
