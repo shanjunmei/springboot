@@ -4,10 +4,10 @@ package com.lanhun.system;
  * 开放平台配置
  */
 public class OpenPlatformConfig {
-    private static String appId="xxx";
+    private static String appId="8c8a2aa30666a04b8f3a042a35fec27b";
     private static String appSecret="xxx";
     private static String signType="md5";
-    private static String accessToken="xx";
+    private static String accessToken="27a08b9d20df211b31f68fc7105ad14a";
     private static String version="2.0";
 
     public static String getAppId() {

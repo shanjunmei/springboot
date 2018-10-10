@@ -10,10 +10,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-/**
+/***
  * 启动监听器
- *
- * @author Storezhang
  */
 @Service
 public class StartupListener implements ApplicationListener<ContextRefreshedEvent> {

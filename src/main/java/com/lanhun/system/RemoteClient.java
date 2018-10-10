@@ -11,7 +11,7 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 public @interface RemoteClient {
     //前缀
-    String prefix() default "";
+    String gateway() default "";
     //方法名
     String value() default "";
 

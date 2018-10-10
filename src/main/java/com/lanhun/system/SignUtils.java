@@ -54,7 +54,7 @@ public class SignUtils {
                 temp+=1;
             }
         }
-        return sb.toString().toUpperCase();
+        return sb.toString().toLowerCase();
     }
 
     /**
@@ -94,7 +94,7 @@ public class SignUtils {
             }
 
         }
-        return md5(paramStr.toString());
+        return md5(paramStr.toString()).toUpperCase();
     }
 
     /**
