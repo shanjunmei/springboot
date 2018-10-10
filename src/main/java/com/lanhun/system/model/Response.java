@@ -2,38 +2,16 @@ package com.lanhun.system.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * 开放平台请求体
- */
-public class Request {
-
-    //访问令牌
-    @JsonProperty("access_token")
-    private String accessToken;
-    //应用标识
+public class Response<T> {
     @JsonProperty("app_id")
     private String appId;
-    //业务参数
-    private String body;
-    //业务方法
-    private String method;
-    //签名
+    private T body;
     private String sign;
-    //签名类型(默认md5)
     @JsonProperty("sign_type")
-    private String signType="md5";
-    //时间戳
+    private String signType;
     private Long timestamp;
-    //版本（默认2.0）
-    private String version="2.0";
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
+    private String version;
+    private String method;
 
     public String getAppId() {
         return appId;
@@ -43,20 +21,12 @@ public class Request {
         this.appId = appId;
     }
 
-    public String getBody() {
+    public T getBody() {
         return body;
     }
 
-    public void setBody(String body) {
+    public void setBody(T body) {
         this.body = body;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
     }
 
     public String getSign() {
@@ -89,5 +59,13 @@ public class Request {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
     }
 }

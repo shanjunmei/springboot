@@ -1,6 +1,10 @@
 package com.lanhun.system;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.lanhun.system.model.Branch;
+import com.lanhun.system.model.BusinessResponse;
 import com.lanhun.system.model.Request;
+import com.lanhun.system.model.Response;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -8,14 +12,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * http 请求
  */
 public class HttpInvoker {
+
+    private  static Logger logger=LoggerFactory.getLogger(HttpInvoker.class);
 
     /**
      * 请求参数转换
@@ -47,6 +56,7 @@ public class HttpInvoker {
         request.setTimestamp(new Date().getTime());
         String sign = SignUtils.sign(request);
         request.setSign(sign);
+        logger.info("request :"+JsonMapper.toJsonString(request));
         return JsonMapper.toJson(request);
     }
 
@@ -54,8 +64,17 @@ public class HttpInvoker {
      * 远程方法调用
      */
     public static <T> T invoke(RemoteMethod method, Object[] args) {
-        String response = post(method.getGateway(), convertParamter(method.getCommond(), method.getParamNames(), args));
-        return buildResponse(method.getReturnType(), response);
+        Map<String,String> header=new HashMap<>();
+        header.put("Content-Type","application/json");
+        String response = request(method.getGateway(), convertParamter(method.getCommond(), method.getParamNames(), args),header,"POST");
+        logger.info("source response :"+response);
+        Response<String> stringResponse= buildCommonResponse(response);
+        BusinessResponse<Object> businessResponse=JsonMapper.from(BusinessResponse.class,stringResponse.getBody());
+         if(businessResponse.getData() instanceof String){
+            return JsonMapper.from(method.getReturnType(),(String)businessResponse.getData());
+        }else{
+            return (T)JsonMapper.from(method.getReturnType(),JsonMapper.toJsonString(businessResponse.getData()));
+        }
     }
 
     /**
@@ -65,7 +84,7 @@ public class HttpInvoker {
      * @return
      */
     public static String post(String url,byte[] params){
-        return post(url,params,null);
+        return request(url,params,null,"POST");
     }
 
     /**
@@ -75,12 +94,17 @@ public class HttpInvoker {
      * @param header
      * @return
      */
-    public static String post(String url, byte[] params,Map<String,String> header) {
+    public static String request(String url, byte[] params,Map<String,String> header,String method) {
         //request
         try {
+            System.setProperty("http.proxyHost", "127.0.0.1");
+            System.setProperty("https.proxyHost", "127.0.0.1");
+            System.setProperty("http.proxyPort", "8888");
+            System.setProperty("https.proxyPort", "8888");
+
             URL _url = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) _url.openConnection();
-            connection.setRequestMethod("POST");
+            connection.setRequestMethod(method);
             connection.setRequestProperty("Charset", "UTF-8");
             connection.setRequestProperty("accept", "*/*");
             connection.setRequestProperty("user-agent",
@@ -90,12 +114,16 @@ public class HttpInvoker {
                     connection.setRequestProperty(entry.getKey(),entry.getValue());//请求头覆盖
                 }
             }
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
+
+            if(params!=null){
+                connection.setDoOutput(true);
+            }
             connection.connect();
 
 
-            connection.getOutputStream().write(params);
+            if(params!=null){
+                connection.getOutputStream().write(params);
+            }
             StringBuilder body = null;
             try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
                 while (bufferedReader.ready()) {
@@ -114,6 +142,16 @@ public class HttpInvoker {
             throw new RuntimeException(e);
         }
 
+    }
+
+    /**
+     * 构建公共响应体
+     * @param body
+     * @return
+     */
+    public static <T> Response<T> buildCommonResponse(String body){
+        Type type=Response.class;
+        return JsonMapper.from(type,body);
     }
 
     /**

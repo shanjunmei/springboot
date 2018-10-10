@@ -10,12 +10,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 签名工具类
  */
 public class SignUtils {
 
+    private static Logger logger=LoggerFactory.getLogger(SignUtils.class);
     /**
      * 对象转map
      * @param o
@@ -77,6 +80,7 @@ public class SignUtils {
         Map<String,Object> map=toMap(request);
         map=prepare(map);
         map.remove("sign");
+        map.put("app_secret",OpenPlatformConfig.getAppSecret());
         map.entrySet().stream().sorted(Comparator.comparing(e -> e.getKey())).forEachOrdered(e -> sorted.add(e));
         StringBuilder paramStr=null;
         for(Entry<String,Object> e:sorted){
@@ -86,6 +90,7 @@ public class SignUtils {
                 paramStr.append("&");
             }
             paramStr.append(e.getKey());
+            paramStr.append("=");
             try{
                 String val=  URLEncoder.encode(e.getValue().toString(),"utf-8");
                 paramStr.append(val);
@@ -94,6 +99,7 @@ public class SignUtils {
             }
 
         }
+        logger.info("sign source: "+paramStr.toString());
         return md5(paramStr.toString()).toUpperCase();
     }
 
