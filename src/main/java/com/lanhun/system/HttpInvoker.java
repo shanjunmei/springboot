@@ -1,10 +1,14 @@
 package com.lanhun.system;
 
+import com.lanhun.system.model.Request;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -18,7 +22,25 @@ public class HttpInvoker {
      * @param args
      * @return
      */
-    public static byte[] convertParamter(String[]  paramNames,Object[] args){
+    public static byte[] convertParamter(String method,String[]  paramNames,Object[] args){
+        Map<String,Object> paramsMap=new HashMap<>();
+        for(int i=0;i<paramNames.length;i++){
+            String key=paramNames[i];
+            Object val=args[i];
+            paramsMap.put(key,val);
+        }
+        Request request=new Request();
+        /*
+        request.setAccessToken("");
+        request.setAppId("");
+        request.setBody("");
+        request.setMethod("");
+        request.setSignType("");
+        */
+        request.setTimestamp(new Date().getTime());
+        request.setVersion("2.0");
+        String sign=SignUtils.sign(request);
+        request.setSign(sign);
         return null;
     }
 
@@ -30,7 +52,7 @@ public class HttpInvoker {
      * @return
      */
     public static <T> T invoke(RemoteMethod method,Object[] args){
-        String response= post(method.getCommond(),convertParamter(method.getParamNames(),args));
+        String response= post(method.getCommond(),convertParamter(method.getCommond(),method.getParamNames(),args));
         return buildResponse(method.getReturnType(), response);
     }
 

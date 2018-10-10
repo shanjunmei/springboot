@@ -7,6 +7,9 @@ import java.lang.reflect.Type;
  */
 public class RemoteMethod {
 
+    //网关
+    private String gateway;
+
     //远程方法名
     private String commond;
     //参数名
@@ -18,6 +21,13 @@ public class RemoteMethod {
     //返回值类型
     private Type returnType;
 
+    public String getGateway() {
+        return gateway;
+    }
+
+    public void setGateway(String gateway) {
+        this.gateway = gateway;
+    }
 
     public String getCommond() {
         return commond;

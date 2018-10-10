@@ -52,19 +52,20 @@ public class RemoteInvoker {
             remoteMethod.setParamTypes(method.getParameterTypes());
             remoteMethod.setReturnType(method.getGenericReturnType());
            remoteMethod.setParamNames(getParameterNames(method.getParameters()));
-            String prefix;
+            String gateway;
             String command;
             RemoteClient methodClient=method.getAnnotation(RemoteClient.class);
-            prefix=methodClient.prefix();
+            gateway=methodClient.prefix();
             command=methodClient.value();
-            if(isBlank(prefix)||isBlank(command)){
+            if(isBlank(gateway)||isBlank(command)){
                 RemoteClient classClient=  method.getDeclaringClass().getAnnotation(RemoteClient.class);
                 if(classClient!=null){
-                    prefix=classClient.prefix();
+                    gateway=classClient.prefix();
                     command=classClient.value();
                 }
             }
-            remoteMethod.setCommond(prefix+command);
+            remoteMethod.setGateway(gateway);
+            remoteMethod.setCommond(command);
             methodCache.put(method,remoteMethod);
         }
         return remoteMethod;
