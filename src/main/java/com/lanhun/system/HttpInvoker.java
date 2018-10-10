@@ -30,15 +30,14 @@ public class HttpInvoker {
             paramsMap.put(key,val);
         }
         Request request=new Request();
-        /*
-        request.setAccessToken("");
-        request.setAppId("");
-        request.setBody("");
-        request.setMethod("");
-        request.setSignType("");
-        */
+        request.setMethod(method);
+
+        request.setAccessToken(OpenPlatformConfig.getAccessToken());
+        request.setAppId(OpenPlatformConfig.getAppId());
+        request.setBody("");//Todo paramsMap序列化
+        request.setSignType(OpenPlatformConfig.getSignType());
+        request.setVersion(OpenPlatformConfig.getVersion());
         request.setTimestamp(new Date().getTime());
-        request.setVersion("2.0");
         String sign=SignUtils.sign(request);
         request.setSign(sign);
         return null;
@@ -52,7 +51,7 @@ public class HttpInvoker {
      * @return
      */
     public static <T> T invoke(RemoteMethod method,Object[] args){
-        String response= post(method.getCommond(),convertParamter(method.getCommond(),method.getParamNames(),args));
+        String response= post(method.getGateway(),convertParamter(method.getCommond(),method.getParamNames(),args));
         return buildResponse(method.getReturnType(), response);
     }
 
