@@ -1,6 +1,7 @@
 package com.lanhun.system.model;
 
 public class BusinessResponse<T> {
+
     private String errno;
     private String error;
     private T data;

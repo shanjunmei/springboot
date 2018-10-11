@@ -9,7 +9,6 @@ public interface DataFlowMapper {
 
     /**
      * 列表查询
-     * @return
      */
     List<DataFlow> list();
 }

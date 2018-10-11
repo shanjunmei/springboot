@@ -20,11 +20,8 @@ public class RemoteProxyFactory {
 
     /**
      * 创建代理
-     * @param _interface
-     * @param <T>
-     * @return
      */
-    public  <T> T createProxy(Class<T> _interface) {
+    public <T> T createProxy(Class<T> _interface) {
         try {
             return (T) Proxy.newProxyInstance(_interface.getClassLoader(), new Class[]{_interface}, (proxy, method, args) ->
                     remoteInvoker.invoke(method, args)
@@ -36,11 +33,8 @@ public class RemoteProxyFactory {
 
     /**
      * 从缓存获取远程调用代理，没有则创建并缓存
-     * @param _interface
-     * @param <T>
-     * @return
      */
-    public  <T> T getProxy(Class<T> _interface) {
+    public <T> T getProxy(Class<T> _interface) {
         T intance = (T) proxyCache.get(_interface);
         if (intance == null) {
             intance = createProxy(_interface);

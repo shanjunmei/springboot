@@ -32,9 +32,6 @@ public class HttpInvoker {
 
     /**
      * post 请求，默认请求头
-     * @param url
-     * @param params
-     * @return
      */
     public static String post(String url, byte[] params) {
         return request(url, params, null, "POST");
@@ -42,11 +39,6 @@ public class HttpInvoker {
 
     /**
      * http post 请求，返回String
-     * @param url
-     * @param params
-     * @param header
-     * @param method
-     * @return
      */
     public static String request(String url, byte[] params, Map<String, String> header, String method) {
         //request
@@ -92,9 +84,6 @@ public class HttpInvoker {
 
     /**
      * 构建公共响应体
-     * @param body
-     * @param <T>
-     * @return
      */
     public static <T> Response<T> buildCommonResponse(String body) {
         Type type = Response.class;
@@ -103,10 +92,6 @@ public class HttpInvoker {
 
     /**
      * 构建响应对象
-     * @param type
-     * @param body
-     * @param <T>
-     * @return
      */
     public static <T> T buildResponse(Type type, String body) {
         if (type == void.class) {
@@ -121,10 +106,6 @@ public class HttpInvoker {
 
     /**
      * 请求参数转换
-     * @param method
-     * @param paramNames
-     * @param args
-     * @return
      */
     public byte[] convertParamter(String method, String[] paramNames, Object[] args) {
         String paramBody;
@@ -151,25 +132,21 @@ public class HttpInvoker {
         request.setSignType(openPlatformConfig.getSignType());
         request.setVersion(openPlatformConfig.getVersion());
         request.setTimestamp(new Date().getTime());
-        String sign = SignUtils.sign(request,openPlatformConfig.getAppSecret());
+        String sign = SignUtils.sign(request, openPlatformConfig.getAppSecret());
         request.setSign(sign);
         return JsonMapper.toJson(request);
     }
 
     /**
      * 远程方法调用
-     * @param method
-     * @param args
-     * @param <T>
-     * @return
      */
     @SuppressWarnings("unchecked")
     public <T> T invoke(RemoteMethod method, Object[] args) {
         Map<String, String> header = new HashMap<>();
         header.put("Content-Type", "application/json");
-        String gateway=method.getGateway();
-        if(gateway==null||gateway.trim().length()==0){
-            gateway=openPlatformConfig.getGateway();
+        String gateway = method.getGateway();
+        if (gateway == null || gateway.trim().length() == 0) {
+            gateway = openPlatformConfig.getGateway();
         }
         String response = request(gateway, convertParamter(method.getCommond(), method.getParamNames(), args), header, "POST");
         Response<String> stringResponse = buildCommonResponse(response);

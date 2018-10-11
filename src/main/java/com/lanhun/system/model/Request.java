@@ -21,11 +21,11 @@ public class Request {
     private String sign;
     //签名类型(默认md5)
     @JsonProperty("sign_type")
-    private String signType="md5";
+    private String signType = "md5";
     //时间戳
     private Long timestamp;
     //版本（默认2.0）
-    private String version="2.0";
+    private String version = "2.0";
 
     public String getAccessToken() {
         return accessToken;

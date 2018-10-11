@@ -9,11 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "open.platform.config")
 public class OpenPlatformConfig {
-    private  String appId;//="c29d14d06d15053270c65a25fc4a48a8"
-    private  String appSecret;//="89e80649-d8e7-3569-8843-b6ff72dc37f7";
-    private  String signType;//="md5";
-    private  String accessToken;//="1cbbaf60e5b3df6dc84977d5247a7766";
-    private  String version;//="2.0";
+
+    private String appId;//="c29d14d06d15053270c65a25fc4a48a8"
+    private String appSecret;//="89e80649-d8e7-3569-8843-b6ff72dc37f7";
+    private String signType;//="md5";
+    private String accessToken;//="1cbbaf60e5b3df6dc84977d5247a7766";
+    private String version;//="2.0";
     private String gateway;
 
     public String getAppId() {

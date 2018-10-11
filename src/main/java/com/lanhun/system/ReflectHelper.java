@@ -12,24 +12,20 @@ import org.springframework.core.ParameterNameDiscoverer;
  * 反射工具类
  */
 public class ReflectHelper {
+
     private static final ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
+
     /**
-     *
-     * @Description: 获取方法参数名
-     * @param  method
      * @return String[]    返回参数名称
-     * @throws
+     * @Description: 获取方法参数名
      */
-    public static String[] getParameterNames(Method method){
-        String[] names=parameterNameDiscoverer.getParameterNames(method);
+    public static String[] getParameterNames(Method method) {
+        String[] names = parameterNameDiscoverer.getParameterNames(method);
         return names;
     }
 
     /**
      * 获取一个类上所有拥有指定注解的属性
-     * @param cls
-     * @param annotation
-     * @return
      */
     public static Field[] findFieldByAnnotation(Class<?> cls, Class<? extends Annotation> annotation) {
         Field[] fields = cls.getDeclaredFields();

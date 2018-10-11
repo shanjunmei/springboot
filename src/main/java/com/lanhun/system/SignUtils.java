@@ -18,11 +18,10 @@ import org.slf4j.LoggerFactory;
  */
 public class SignUtils {
 
-    private static Logger logger=LoggerFactory.getLogger(SignUtils.class);
+    private static Logger logger = LoggerFactory.getLogger(SignUtils.class);
+
     /**
      * 对象转map
-     * @param o
-     * @return
      */
     public static Map<String, Object> toMap(Object o) {
         Map<String, Object> map = new HashMap<>();
@@ -43,16 +42,17 @@ public class SignUtils {
 
     /**
      * 驼峰命名转为下划线命名
+     *
      * @param para 下划线命名的字符串
      * @return 驼峰命名的字符串
      */
-    public static String humpToUnderline(String para){
-        StringBuilder sb=new StringBuilder(para);
-        int temp=0;//定位
-        for(int i=0;i<para.length();i++){
-            if(Character.isUpperCase(para.charAt(i))){
-                sb.insert(i+temp, "_");
-                temp+=1;
+    public static String humpToUnderline(String para) {
+        StringBuilder sb = new StringBuilder(para);
+        int temp = 0;//定位
+        for (int i = 0; i < para.length(); i++) {
+            if (Character.isUpperCase(para.charAt(i))) {
+                sb.insert(i + temp, "_");
+                temp += 1;
             }
         }
         return sb.toString().toLowerCase();
@@ -60,39 +60,39 @@ public class SignUtils {
 
     /**
      * key命名样式更新
-     * @param map
      */
-    public static Map<String,Object> prepare(Map<String,Object> map){
-        Map<String,Object> result=new HashMap<>();
-        for(Entry<String,Object> entry:map.entrySet()){
-          String key=   humpToUnderline(entry.getKey());
-          result.put(key,entry.getValue());
+    public static Map<String, Object> prepare(Map<String, Object> map) {
+        Map<String, Object> result = new HashMap<>();
+        for (Entry<String, Object> entry : map.entrySet()) {
+            String key = humpToUnderline(entry.getKey());
+            result.put(key, entry.getValue());
         }
         return result;
     }
+
     /**
      * 签名
      */
-    public static String sign(Request request,String appSecret) {
+    public static String sign(Request request, String appSecret) {
         List<Entry<String, Object>> sorted = new LinkedList<>();
-        Map<String,Object> map=toMap(request);
-        map=prepare(map);
+        Map<String, Object> map = toMap(request);
+        map = prepare(map);
         map.remove("sign");
-        map.put("app_secret",appSecret);
+        map.put("app_secret", appSecret);
         map.entrySet().stream().sorted(Comparator.comparing(e -> e.getKey())).forEachOrdered(e -> sorted.add(e));
-        StringBuilder paramStr=null;
-        for(Entry<String,Object> e:sorted){
-            if(paramStr==null){
-                paramStr=new StringBuilder();
-            }else{
+        StringBuilder paramStr = null;
+        for (Entry<String, Object> e : sorted) {
+            if (paramStr == null) {
+                paramStr = new StringBuilder();
+            } else {
                 paramStr.append("&");
             }
             paramStr.append(e.getKey());
             paramStr.append("=");
-            try{
-                String val=  URLEncoder.encode(e.getValue().toString(),"utf-8");
+            try {
+                String val = URLEncoder.encode(e.getValue().toString(), "utf-8");
                 paramStr.append(val);
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 //IGNORE
             }
 

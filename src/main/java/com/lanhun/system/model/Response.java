@@ -3,6 +3,7 @@ package com.lanhun.system.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Response<T> {
+
     @JsonProperty("app_id")
     private String appId;
     private T body;

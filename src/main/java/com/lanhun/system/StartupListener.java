@@ -30,7 +30,6 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
 
     /**
      * 初始化远程调用
-     * @param applicationContext
      */
     private void handleRemoteClient(ApplicationContext applicationContext) {
         Map<String, Object> beansCache = applicationContext.getBeansWithAnnotation(Component.class);
