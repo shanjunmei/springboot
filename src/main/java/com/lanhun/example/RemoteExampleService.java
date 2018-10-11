@@ -9,5 +9,5 @@ import java.util.Map;
 public interface RemoteExampleService {
 
     @RemoteClient("branch.list")
-    List<Branch> invoke(Map<String,Object> args);
+    List<Branch> invoke(Map<String,Object> _paramsMap);
 }

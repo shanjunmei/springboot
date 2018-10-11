@@ -46,7 +46,7 @@ public class RemoteInvoker {
             remoteMethod = new RemoteMethod();
             remoteMethod.setParamTypes(method.getParameterTypes());
             remoteMethod.setReturnType(method.getGenericReturnType());
-            remoteMethod.setParamNames(getParameterNames(method.getParameters()));
+            remoteMethod.setParamNames(ReflectHelper.getParameterNames(method));
             String gateway;
             String command;
             RemoteClient methodClient = method.getAnnotation(RemoteClient.class);

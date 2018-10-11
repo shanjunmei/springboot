@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface RemoteClient {
-    //前缀
+    //网关
     String gateway() default "";
     //方法名
     String value() default "";

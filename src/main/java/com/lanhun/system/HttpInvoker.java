@@ -12,7 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.slf4j.Logger;
@@ -28,12 +27,16 @@ public class HttpInvoker {
 
     /**
      * 请求参数转换
+     * @param method
+     * @param paramNames
+     * @param args
+     * @return
      */
     public static byte[] convertParamter(String method, String[] paramNames, Object[] args) {
        String  paramBody;
-       if(paramNames.length==1){
+       if(args.length==1){
            paramBody=JsonMapper.toJsonString(args[0]);
-       }else if(paramNames.length>1){
+       }else if(args.length>1){
            Map<String,Object> paramsMap=new HashMap<>();
            for (int i = 0; i < paramNames.length; i++) {
                String key = paramNames[i];
@@ -62,6 +65,10 @@ public class HttpInvoker {
 
     /**
      * 远程方法调用
+     * @param method
+     * @param args
+     * @param <T>
+     * @return
      */
     public static <T> T invoke(RemoteMethod method, Object[] args) {
         Map<String,String> header=new HashMap<>();
@@ -156,6 +163,10 @@ public class HttpInvoker {
 
     /**
      * 构建响应对象
+     * @param type
+     * @param body
+     * @param <T>
+     * @return
      */
     public static <T> T buildResponse(Type type, String body) {
         if (type == void.class) {
