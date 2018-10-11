@@ -38,6 +38,6 @@ public class SpringBootConsoleApplication implements CommandLineRunner {
             }
             logger.info("接收到未识别命令:" + command);
         }
-        logger.info("System Started");
+        logger.info("System Exit");
     }
 }

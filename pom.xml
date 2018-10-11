@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.lanhun.framework</groupId>
-  <artifactId>framework-bootweb</artifactId>
+  <artifactId>framework-boot</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>framework-boot</name>
@@ -71,8 +71,17 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>framework-bootweb</finalName>
+    <finalName>${project.artifactId}</finalName>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.0</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
@@ -85,13 +94,23 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.0.0</version>
         <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
+          <appendAssemblyId>false</appendAssemblyId>
+          <descriptors>
+            <descriptor>src/main/assembly/assembly.xml</descriptor>
+          </descriptors>
         </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <!--<phase>package</phase>-->
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
