@@ -16,6 +16,7 @@ public class OpenPlatformConfig {
     private String accessToken;//="1cbbaf60e5b3df6dc84977d5247a7766";
     private String version;//="2.0";
     private String gateway;
+    private String branchId;
 
     public String getAppId() {
         return appId;
@@ -63,5 +64,13 @@ public class OpenPlatformConfig {
 
     public void setGateway(String gateway) {
         this.gateway = gateway;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
     }
 }

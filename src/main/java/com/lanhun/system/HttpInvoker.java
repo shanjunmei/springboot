@@ -135,6 +135,7 @@ public class HttpInvoker {
         request.setTimestamp(new Date().getTime());
         String sign = SignUtils.sign(request, openPlatformConfig.getAppSecret());
         request.setSign(sign);
+        logger.info("request body :"+JsonMapper.toJsonString(request));
         return JsonMapper.toJson(request);
     }
 
@@ -145,6 +146,7 @@ public class HttpInvoker {
     public <T> T invoke(RemoteMethod method, Object[] args) {
         Map<String, String> header = new HashMap<>();
         header.put("Content-Type", "application/json");
+        header.put("zb-branch-id",openPlatformConfig.getBranchId());
         String gateway = method.getGateway();
         if (gateway == null || gateway.trim().length() == 0) {
             gateway = openPlatformConfig.getGateway();
@@ -156,7 +158,7 @@ public class HttpInvoker {
         if (businessResponse.getData() instanceof String) {
             return JsonMapper.from(method.getReturnType(), (String) businessResponse.getData());
         } else {
-            return (T) JsonMapper.from(method.getReturnType(), JsonMapper.toJsonString(businessResponse.getData()));
+            return (T) buildResponse(method.getReturnType(), JsonMapper.toJsonString(businessResponse.getData()));
         }
     }
 }

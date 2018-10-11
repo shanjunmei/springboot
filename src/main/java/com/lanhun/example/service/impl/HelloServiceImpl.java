@@ -3,6 +3,7 @@ package com.lanhun.example.service.impl;
 
 import com.lanhun.example.RemoteExampleService;
 import com.lanhun.example.dao.DataFlowMapper;
+import com.lanhun.example.model.CancelOrderRequest;
 import com.lanhun.example.model.DataFlow;
 import com.lanhun.example.service.HelloService;
 import com.lanhun.system.JsonMapper;
@@ -40,7 +41,11 @@ public class HelloServiceImpl implements HelloService {
 
         param.put("page_no", 1);
         param.put("page_size", 10);
-        List<Branch> remoteResult = remoteExampleService.invoke(param);
+        List<Branch> remoteResult = remoteExampleService.queryBranchList(param);
+        CancelOrderRequest request=new CancelOrderRequest();
+        request.setExternalTableId("801100001");
+        request.setReason("just do it");
+        remoteExampleService.cancelOrder(request);
         return name + " Hello ,Remote Result:" + JsonMapper.toJsonString(remoteResult);
     }
 }
