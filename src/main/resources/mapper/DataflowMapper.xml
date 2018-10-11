@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
-"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-
+  "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="com.lanhun.example.dao.DataFlowMapper">
-
-    <resultMap id="BaseResult" type="com.lanhun.example.model.DataFlow">
-        <result property="rowNumber" column="RowNumber"/>
-        <result property="textData" column="TextData"/>
-
-    </resultMap>
-    <sql id="columns">
-        <![CDATA[
+  <resultMap id="BaseResult" type="com.lanhun.example.model.DataFlow">
+    <result column="RowNumber" property="rowNumber"/>
+    <result column="TextData" property="textData"/>
+  </resultMap>
+  <sql id="columns">
         RowNumber, TextData
-        ]]>
     </sql>
-    <select id="list" resultMap="BaseResult">
-        SELECT
-            <include refid="columns" />
-        FROM
-            dataflow
-
-    </select>
-
-
+  <select id="list" resultMap="BaseResult">
+    SELECT
+    <include refid="columns"/>
+    FROM
+    dataflow
+  </select>
 </mapper>
 

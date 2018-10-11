@@ -7,5 +7,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface DataFlowMapper {
 
+    /**
+     * 列表查询
+     * @return
+     */
     List<DataFlow> list();
 }

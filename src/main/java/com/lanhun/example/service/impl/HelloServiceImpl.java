@@ -35,9 +35,9 @@ public class HelloServiceImpl implements HelloService {
         logger.info("data.size:"+data.size());
 
         Map<String,Object> param=new HashMap<>();
-/*
+
         param.put("name","深圳");
-*/
+
         param.put("page_no",1);
         param.put("page_size",10);
         List<Branch> remoteResult= remoteExampleService.invoke(param);
