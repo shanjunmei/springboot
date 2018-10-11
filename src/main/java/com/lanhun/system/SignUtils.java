@@ -36,9 +36,7 @@ public class SignUtils {
             } catch (Exception e) {
                 //IGNORE
             }
-
         }
-
         return map;
     }
 

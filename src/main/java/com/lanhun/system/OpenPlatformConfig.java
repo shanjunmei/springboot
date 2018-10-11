@@ -14,6 +14,7 @@ public class OpenPlatformConfig {
     private  String signType;//="md5";
     private  String accessToken;//="1cbbaf60e5b3df6dc84977d5247a7766";
     private  String version;//="2.0";
+    private String gateway;
 
     public String getAppId() {
         return appId;
@@ -53,5 +54,13 @@ public class OpenPlatformConfig {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public String getGateway() {
+        return gateway;
+    }
+
+    public void setGateway(String gateway) {
+        this.gateway = gateway;
     }
 }

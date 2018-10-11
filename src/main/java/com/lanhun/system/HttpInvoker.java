@@ -43,11 +43,6 @@ public class HttpInvoker {
     public static String request(String url, byte[] params, Map<String, String> header, String method) {
         //request
         try {
-            System.setProperty("http.proxyHost", "127.0.0.1");
-            System.setProperty("https.proxyHost", "127.0.0.1");
-            System.setProperty("http.proxyPort", "8888");
-            System.setProperty("https.proxyPort", "8888");
-
             URL _url = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) _url.openConnection();
             connection.setRequestMethod(method);
@@ -150,7 +145,11 @@ public class HttpInvoker {
     public <T> T invoke(RemoteMethod method, Object[] args) {
         Map<String, String> header = new HashMap<>();
         header.put("Content-Type", "application/json");
-        String response = request(method.getGateway(), convertParamter(method.getCommond(), method.getParamNames(), args), header, "POST");
+        String gateway=method.getGateway();
+        if(gateway==null||gateway.trim().length()==0){
+            gateway=openPlatformConfig.getGateway();
+        }
+        String response = request(gateway, convertParamter(method.getCommond(), method.getParamNames(), args), header, "POST");
         Response<String> stringResponse = buildCommonResponse(response);
         BusinessResponse<Object> businessResponse = JsonMapper.from(BusinessResponse.class, stringResponse.getBody());
         if (businessResponse.getData() instanceof String) {
