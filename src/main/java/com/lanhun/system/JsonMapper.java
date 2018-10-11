@@ -7,6 +7,7 @@ import java.lang.reflect.Type;
 /**
  * json转换
  */
+@SuppressWarnings("unchecked")
 public class JsonMapper {
 
 

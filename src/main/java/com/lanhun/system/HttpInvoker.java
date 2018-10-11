@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
  * http 请求
  */
 @Component
+@SuppressWarnings("unchecked")
 public class HttpInvoker {
 
     private static Logger logger = LoggerFactory.getLogger(HttpInvoker.class);
@@ -140,7 +141,7 @@ public class HttpInvoker {
     /**
      * 远程方法调用
      */
-    @SuppressWarnings("unchecked")
+
     public <T> T invoke(RemoteMethod method, Object[] args) {
         Map<String, String> header = new HashMap<>();
         header.put("Content-Type", "application/json");
@@ -149,6 +150,7 @@ public class HttpInvoker {
             gateway = openPlatformConfig.getGateway();
         }
         String response = request(gateway, convertParamter(method.getCommond(), method.getParamNames(), args), header, "POST");
+        logger.info("invoke result:"+response);
         Response<String> stringResponse = buildCommonResponse(response);
         BusinessResponse<Object> businessResponse = JsonMapper.from(BusinessResponse.class, stringResponse.getBody());
         if (businessResponse.getData() instanceof String) {
