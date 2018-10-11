@@ -54,7 +54,7 @@ if [ -n "$BITS" ]; then
 else
   JAVA_MEM_OPTS=" -server -Xms512m -Xmx512m -XX:PermSize=128m -XX:SurvivorRatio=2 -XX:+UseParallelGC "
 fi
-CONFIG_FILES=" -Dlogging.path=$LOGS_DIR -Dspring.config.location=$CONF_DIR/application.properties "
+CONFIG_FILES=" -Dlogging.path=$LOGS_DIR -Dspring.config.location=$CONF_DIR/application.yaml "
 echo -e "Starting the $SERVER_NAME ..."
 nohup java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS $CONFIG_FILES -jar $DEPLOY_DIR/lib/$JAR_NAME > $STDOUT_FILE 2>&1 &
 COUNT=0
