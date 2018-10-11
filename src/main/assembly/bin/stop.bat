@@ -1,1 +1,0 @@
-java -jar framework-boot.jar
