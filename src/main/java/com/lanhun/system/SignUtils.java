@@ -99,7 +99,6 @@ public class SignUtils {
             }
 
         }
-        logger.info("sign source: "+paramStr.toString());
         return md5(paramStr.toString()).toUpperCase();
     }
 

@@ -59,7 +59,7 @@ public class HttpInvoker {
         request.setTimestamp(new Date().getTime());
         String sign = SignUtils.sign(request);
         request.setSign(sign);
-        logger.info("request :"+JsonMapper.toJsonString(request));
+
         return JsonMapper.toJson(request);
     }
 
@@ -70,11 +70,11 @@ public class HttpInvoker {
      * @param <T>
      * @return
      */
+    @SuppressWarnings("unchecked")
     public static <T> T invoke(RemoteMethod method, Object[] args) {
         Map<String,String> header=new HashMap<>();
         header.put("Content-Type","application/json");
         String response = request(method.getGateway(), convertParamter(method.getCommond(), method.getParamNames(), args),header,"POST");
-        logger.info("source response :"+response);
         Response<String> stringResponse= buildCommonResponse(response);
         BusinessResponse<Object> businessResponse=JsonMapper.from(BusinessResponse.class,stringResponse.getBody());
          if(businessResponse.getData() instanceof String){
@@ -121,13 +121,10 @@ public class HttpInvoker {
                     connection.setRequestProperty(entry.getKey(),entry.getValue());//请求头覆盖
                 }
             }
-
             if(params!=null){
                 connection.setDoOutput(true);
             }
             connection.connect();
-
-
             if(params!=null){
                 connection.getOutputStream().write(params);
             }

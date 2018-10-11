@@ -1,2 +1,12 @@
 server:
   port: 9081
+spring:
+  datasource:
+    #driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+   # url: jdbc:sqlserver://192.168.1.166:1433; DatabaseName=RMDBFD
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/saofu?characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&useSSL=false
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
