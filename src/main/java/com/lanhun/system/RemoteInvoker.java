@@ -9,22 +9,28 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * 远程方法实际调用者
  */
+@Component
 public class RemoteInvoker {
 
     private static Logger logger = LoggerFactory.getLogger(RemoteInvoker.class);
 
     private static Map<Method, RemoteMethod> methodCache = new HashMap<>();
 
+    @Autowired
+    private HttpInvoker httpInvoker;
+
     /**
      * 远程方法
      */
-    public static Object invoke(Method method, Object[] params) {
+    public  Object invoke(Method method, Object[] params) {
         RemoteMethod remoteMethod = buildRemoteMethod(method);
-        return HttpInvoker.invoke(remoteMethod, params);
+        return httpInvoker.invoke(remoteMethod, params);
     }
 
     private static String[] getParameterNames(Parameter[] parameters) {

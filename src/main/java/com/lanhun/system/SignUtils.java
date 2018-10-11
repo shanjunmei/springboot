@@ -75,12 +75,12 @@ public class SignUtils {
     /**
      * 签名
      */
-    public static String sign(Request request) {
+    public static String sign(Request request,String appSecret) {
         List<Entry<String, Object>> sorted = new LinkedList<>();
         Map<String,Object> map=toMap(request);
         map=prepare(map);
         map.remove("sign");
-        map.put("app_secret",OpenPlatformConfig.getAppSecret());
+        map.put("app_secret",appSecret);
         map.entrySet().stream().sorted(Comparator.comparing(e -> e.getKey())).forEachOrdered(e -> sorted.add(e));
         StringBuilder paramStr=null;
         for(Entry<String,Object> e:sorted){

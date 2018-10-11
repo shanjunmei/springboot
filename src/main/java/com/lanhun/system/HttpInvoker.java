@@ -1,7 +1,6 @@
 package com.lanhun.system;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.lanhun.system.model.Branch;
+
 import com.lanhun.system.model.BusinessResponse;
 import com.lanhun.system.model.Request;
 import com.lanhun.system.model.Response;
@@ -16,92 +15,32 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 
 /**
  * http 请求
  */
+@Component
 public class HttpInvoker {
 
-    private  static Logger logger=LoggerFactory.getLogger(HttpInvoker.class);
+    private static Logger logger = LoggerFactory.getLogger(HttpInvoker.class);
 
-    /**
-     * 请求参数转换
-     * @param method
-     * @param paramNames
-     * @param args
-     * @return
-     */
-    public static byte[] convertParamter(String method, String[] paramNames, Object[] args) {
-       String  paramBody;
-       if(args.length==1){
-           paramBody=JsonMapper.toJsonString(args[0]);
-       }else if(args.length>1){
-           Map<String,Object> paramsMap=new HashMap<>();
-           for (int i = 0; i < paramNames.length; i++) {
-               String key = paramNames[i];
-               Object val = args[i];
-               paramsMap.put(key, val);
-           }
-           paramBody=JsonMapper.toJsonString(paramsMap);
-       }else{
-           paramBody=null;
-       }
-
-        Request request = new Request();
-        request.setMethod(method);
-
-        request.setAccessToken(OpenPlatformConfig.getAccessToken());
-        request.setAppId(OpenPlatformConfig.getAppId());
-        request.setBody(paramBody);
-        request.setSignType(OpenPlatformConfig.getSignType());
-        request.setVersion(OpenPlatformConfig.getVersion());
-        request.setTimestamp(new Date().getTime());
-        String sign = SignUtils.sign(request);
-        request.setSign(sign);
-
-        return JsonMapper.toJson(request);
-    }
-
-    /**
-     * 远程方法调用
-     * @param method
-     * @param args
-     * @param <T>
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> T invoke(RemoteMethod method, Object[] args) {
-        Map<String,String> header=new HashMap<>();
-        header.put("Content-Type","application/json");
-        String response = request(method.getGateway(), convertParamter(method.getCommond(), method.getParamNames(), args),header,"POST");
-        Response<String> stringResponse= buildCommonResponse(response);
-        BusinessResponse<Object> businessResponse=JsonMapper.from(BusinessResponse.class,stringResponse.getBody());
-         if(businessResponse.getData() instanceof String){
-            return JsonMapper.from(method.getReturnType(),(String)businessResponse.getData());
-        }else{
-            return (T)JsonMapper.from(method.getReturnType(),JsonMapper.toJsonString(businessResponse.getData()));
-        }
-    }
+    @Autowired
+    private OpenPlatformConfig openPlatformConfig;
 
     /**
      * post 请求，默认请求头
-     * @param url
-     * @param params
-     * @return
      */
-    public static String post(String url,byte[] params){
-        return request(url,params,null,"POST");
+    public static String post(String url, byte[] params) {
+        return request(url, params, null, "POST");
     }
 
     /**
-     *  http post 请求，返回String
-     * @param url
-     * @param params
-     * @param header
-     * @return
+     * http post 请求，返回String
      */
-    public static String request(String url, byte[] params,Map<String,String> header,String method) {
+    public static String request(String url, byte[] params, Map<String, String> header, String method) {
         //request
         try {
             System.setProperty("http.proxyHost", "127.0.0.1");
@@ -116,16 +55,16 @@ public class HttpInvoker {
             connection.setRequestProperty("accept", "*/*");
             connection.setRequestProperty("user-agent",
                     "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-            if(header!=null){
-                for(Entry<String,String> entry:header.entrySet()){
-                    connection.setRequestProperty(entry.getKey(),entry.getValue());//请求头覆盖
+            if (header != null) {
+                for (Entry<String, String> entry : header.entrySet()) {
+                    connection.setRequestProperty(entry.getKey(), entry.getValue());//请求头覆盖
                 }
             }
-            if(params!=null){
+            if (params != null) {
                 connection.setDoOutput(true);
             }
             connection.connect();
-            if(params!=null){
+            if (params != null) {
                 connection.getOutputStream().write(params);
             }
             StringBuilder body = null;
@@ -150,20 +89,14 @@ public class HttpInvoker {
 
     /**
      * 构建公共响应体
-     * @param body
-     * @return
      */
-    public static <T> Response<T> buildCommonResponse(String body){
-        Type type=Response.class;
-        return JsonMapper.from(type,body);
+    public static <T> Response<T> buildCommonResponse(String body) {
+        Type type = Response.class;
+        return JsonMapper.from(type, body);
     }
 
     /**
      * 构建响应对象
-     * @param type
-     * @param body
-     * @param <T>
-     * @return
      */
     public static <T> T buildResponse(Type type, String body) {
         if (type == void.class) {
@@ -171,8 +104,59 @@ public class HttpInvoker {
         } else if (type == String.class) {
             return (T) body;
         } else {
-            return JsonMapper.from(type,body);
+            return JsonMapper.from(type, body);
         }
 
+    }
+
+    /**
+     * 请求参数转换
+     */
+    public byte[] convertParamter(String method, String[] paramNames, Object[] args) {
+        String paramBody;
+        if (args.length == 1) {
+            paramBody = JsonMapper.toJsonString(args[0]);
+        } else if (args.length > 1) {
+            Map<String, Object> paramsMap = new HashMap<>();
+            for (int i = 0; i < paramNames.length; i++) {
+                String key = paramNames[i];
+                Object val = args[i];
+                paramsMap.put(key, val);
+            }
+            paramBody = JsonMapper.toJsonString(paramsMap);
+        } else {
+            paramBody = null;
+        }
+
+        Request request = new Request();
+        request.setMethod(method);
+
+        request.setAccessToken(openPlatformConfig.getAccessToken());
+        request.setAppId(openPlatformConfig.getAppId());
+        request.setBody(paramBody);
+        request.setSignType(openPlatformConfig.getSignType());
+        request.setVersion(openPlatformConfig.getVersion());
+        request.setTimestamp(new Date().getTime());
+        String sign = SignUtils.sign(request,openPlatformConfig.getAppSecret());
+        request.setSign(sign);
+
+        return JsonMapper.toJson(request);
+    }
+
+    /**
+     * 远程方法调用
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T invoke(RemoteMethod method, Object[] args) {
+        Map<String, String> header = new HashMap<>();
+        header.put("Content-Type", "application/json");
+        String response = request(method.getGateway(), convertParamter(method.getCommond(), method.getParamNames(), args), header, "POST");
+        Response<String> stringResponse = buildCommonResponse(response);
+        BusinessResponse<Object> businessResponse = JsonMapper.from(BusinessResponse.class, stringResponse.getBody());
+        if (businessResponse.getData() instanceof String) {
+            return JsonMapper.from(method.getReturnType(), (String) businessResponse.getData());
+        } else {
+            return (T) JsonMapper.from(method.getReturnType(), JsonMapper.toJsonString(businessResponse.getData()));
+        }
     }
 }

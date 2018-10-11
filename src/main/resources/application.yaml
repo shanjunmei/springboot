@@ -10,3 +10,12 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/saofu?characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&useSSL=false
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+
+open:
+  platform:
+    config:
+      access-token: 1cbbaf60e5b3df6dc84977d5247a7766
+      app-id: c29d14d06d15053270c65a25fc4a48a8
+      sign-type: md5
+      app-secret: 89e80649-d8e7-3569-8843-b6ff72dc37f7
+      version: 2.0

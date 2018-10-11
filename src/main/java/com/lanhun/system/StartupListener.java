@@ -4,18 +4,20 @@ package com.lanhun.system;
 import java.lang.reflect.Field;
 import java.util.Map;
 import org.springframework.aop.framework.AopProxyUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /***
  * 启动监听器
  */
-@Service
+@Component
 public class StartupListener implements ApplicationListener<ContextRefreshedEvent> {
 
+    @Autowired
+    private RemoteProxyFactory remoteProxyFactory;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent evt) {
@@ -37,7 +39,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
             if (target != null) {
                 Field[] fields = ReflectHelper.findFieldByAnnotation(target, RemoteClient.class);
                 for (Field field : fields) {
-                    Object proxy = RemoteProxyFactory.getProxy(field.getType());
+                    Object proxy = remoteProxyFactory.getProxy(field.getType());
                     boolean accessible = field.isAccessible();
                     field.setAccessible(true);
                     try {
