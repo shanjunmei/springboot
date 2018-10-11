@@ -26,13 +26,21 @@ public class RemoteInvoker {
     private HttpInvoker httpInvoker;
 
     /**
-     * 远程方法
+     * 远程方法调用
+     * @param method
+     * @param params
+     * @return
      */
     public  Object invoke(Method method, Object[] params) {
         RemoteMethod remoteMethod = buildRemoteMethod(method);
         return httpInvoker.invoke(remoteMethod, params);
     }
 
+    /**
+     * 获取请求参数
+     * @param parameters
+     * @return
+     */
     private static String[] getParameterNames(Parameter[] parameters) {
         List<String> list = new ArrayList<>();
         for (Parameter parameter : parameters) {
@@ -44,6 +52,8 @@ public class RemoteInvoker {
 
     /**
      * 构建远程方法对象
+     * @param method
+     * @return
      */
     private static RemoteMethod buildRemoteMethod(Method method) {
         RemoteMethod remoteMethod = methodCache.get(method);
@@ -77,6 +87,8 @@ public class RemoteInvoker {
 
     /**
      * 是否空字符串判断
+     * @param str
+     * @return
      */
     public static boolean isBlank(String str) {
         if (str == null || str.trim().length() == 0) {
