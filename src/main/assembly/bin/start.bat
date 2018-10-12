@@ -3,7 +3,7 @@ set APP_NAME=framework-boot.jar
 set CONFIG= -Dlogging.path=../logs -Dspring.config.location=../config/application.yaml
 set JRE_HOME=..\jre
 set exe=%JRE_HOME%\bin\java
-set RUN_OPS=-Xms512m -Xmx512m -server
+set RUN_OPS=-Xms12m -Xmx64m -server
 set DEBUG_OPTS=
 if ""%1"" == ""debug"" (
   set DEBUG_OPTS= -Xloggc:../logs/gc.log -verbose:gc -XX:+PrintGCDetails -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=../logs 
