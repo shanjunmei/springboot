@@ -26,10 +26,11 @@ public class SpringBootConsoleApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         logger.info("System Starting");
+
         String ret = helloService.hello("Boot");
         logger.info("Boot Service Result: " + ret);
-
-        while (true) {
+        Thread.currentThread().join();
+       /* while (true) {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             String command = br.readLine();
             if ("exit".equals(command)) {
@@ -37,7 +38,7 @@ public class SpringBootConsoleApplication implements CommandLineRunner {
                 break;
             }
             logger.info("接收到未识别命令:" + command);
-        }
+        }*/
         logger.info("System Exit");
     }
 }
