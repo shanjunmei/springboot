@@ -33,25 +33,27 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
      */
     private void handleRemoteClient(ApplicationContext applicationContext) {
         Map<String, Object> beansCache = applicationContext.getBeansWithAnnotation(Component.class);
-        beansCache.values().forEach(v -> {
-            Class<?> target = AopProxyUtils.ultimateTargetClass(v);
-            if (target != null) {
-                Field[] fields = ReflectHelper.findFieldByAnnotation(target, RemoteClient.class);
-                for (Field field : fields) {
-                    Object proxy = remoteProxyFactory.getProxy(field.getType());
-                    boolean accessible = field.isAccessible();
-                    field.setAccessible(true);
-                    try {
-                        field.set(v, proxy);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                    field.setAccessible(accessible);
-                }
-
-            }
-        });
+        beansCache.values().forEach(v -> handleRemoteClient(v));
     }
 
-
+    /**
+     * 初始化远程调用
+     */
+    private void handleRemoteClient(Object v) {
+        Class<?> target = AopProxyUtils.ultimateTargetClass(v);
+        if (target != null) {
+            Field[] fields = ReflectHelper.findFieldByAnnotation(target, RemoteClient.class);
+            for (Field field : fields) {
+                Object proxy = remoteProxyFactory.getProxy(field.getType());
+                boolean accessible = field.isAccessible();
+                field.setAccessible(true);
+                try {
+                    field.set(v, proxy);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                field.setAccessible(accessible);
+            }
+        }
+    }
 }
