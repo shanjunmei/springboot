@@ -146,6 +146,7 @@ public class HttpInvoker {
     public <T> T invoke(RemoteMethod method, Object[] args) {
         Map<String, String> header = new HashMap<>();
         header.put("Content-Type", "application/json");
+        header.put("zb-shop-id",openPlatformConfig.getShopId());
         header.put("zb-branch-id",openPlatformConfig.getBranchId());
         String gateway = method.getGateway();
         if (gateway == null || gateway.trim().length() == 0) {
