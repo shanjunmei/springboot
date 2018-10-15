@@ -18,5 +18,5 @@ open:
       app-secret: 89e80649-d8e7-3569-8843-b6ff72dc37f7
       version: 2.0
       gateway: http://api.open.dev-a.saofu.cn/gateway/
-      shop-id: 42
+      shop-id: 25591
       branch-id: 1516663426
